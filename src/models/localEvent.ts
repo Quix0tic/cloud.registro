@@ -7,10 +7,10 @@ import { Model, Table, PrimaryKey, Column, AutoIncrement, DataType } from 'seque
     indexes: [{ fields: ["profile"] }]
 })
 export default class LocalEvent extends Model<LocalEvent>{
-    @Column({primaryKey:true})
+    @Column({ primaryKey: true })
     id: number
 
-    @Column({primaryKey:true})
+    @Column({ primaryKey: true })
     profile: number
 
     @Column
@@ -31,9 +31,9 @@ export default class LocalEvent extends Model<LocalEvent>{
     @Column
     type: String
 
-    @Column
+    @Column(DataType.BIGINT)
     completed_date: number
 
-    @Column
+    @Column(DataType.BIGINT)
     day: number
 }
