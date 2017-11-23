@@ -33,7 +33,7 @@ router.route("/user/:id/remote")
             archived: boolean
         }>).map(value => {
             value.profile = profile
-            return RemoteEventInfo.build(value)
+            return RemoteEventInfo.build<RemoteEventInfo>(value)
         })
 
         try {
@@ -87,7 +87,7 @@ router.route("/user/:id/local")
             day: number
         }>).map(value => {
             value.profile = Number.parseInt(req.params.id)
-            return LocalEvent.build(value)
+            return LocalEvent.build<LocalEvent>(value)
         })
 
         try {
