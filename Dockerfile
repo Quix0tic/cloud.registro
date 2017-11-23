@@ -7,6 +7,6 @@ WORKDIR /app
 RUN npm install
 RUN npm run tsc
 
-EXPOSE 80
+EXPOSE 8585
 
 CMD ["npm", "start"]
