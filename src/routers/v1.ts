@@ -3,6 +3,8 @@ import { MyRequest } from '../app'
 
 import LocalEvent from '../models/localEvent'
 import RemoteEventInfo from '../models/remoteEventInfo'
+import { IsArray } from 'sequelize-typescript/lib/annotations/validation/IsArray';
+import { isArray } from 'util';
 
 export let router = express.Router()
 
@@ -12,7 +14,11 @@ router.route("/user/:id/remote")
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
         if (req.body.data === undefined) {
-            return res.status(401).json("Provide a body")
+            return res.status(401).json('Provide "data"')
+        }
+
+        if (!isArray(req.body.data)) {
+            return res.status(401).json('"data" needs to be an array')
         }
 
         let profile = Number.parseInt(req.params.id)
@@ -34,7 +40,7 @@ router.route("/user/:id/remote")
                 return RemoteEventInfo.upsert<RemoteEventInfo>(value)
             }))
             return res.json(data)
-        }catch(err){
+        } catch (err) {
             return next(err)
         }
         /*try {
@@ -51,7 +57,11 @@ router.route("/user/:id/local")
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
         if (req.body.data === undefined) {
-            return res.status(401).json("Provide a body")
+            return res.status(401).json('Provide "data"')
+        }
+
+        if (!isArray(req.body.data)) {
+            return res.status(401).json('"data" needs to be an array')
         }
 
         let profile = Number.parseInt(req.params.id)
