@@ -15,17 +15,17 @@ router.route("/user/:id/remote")
         return res.json(await RemoteEventInfo.findAll({ where: { profile: req.params.id }, attributes: { exclude: ["profile"] } }))
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
-        if (req.body.data === undefined) {
-            return res.status(401).json('Provide "data"')
+        if (req.body === undefined) {
+            return res.status(401).json('Provide body')
         }
 
-        if (!isArray(req.body.data)) {
-            return res.status(401).json('"data" needs to be an array')
+        if (!isArray(req.body)) {
+            return res.status(401).json('Body needs to be an array')
         }
 
         let profile = Number.parseInt(req.params.id)
 
-        let data: Array<RemoteEventInfo> = (req.body.data as Array<{
+        let data: Array<RemoteEventInfo> = (req.body as Array<{
             profile: number | undefined
             id: number
             completed: boolean
@@ -64,17 +64,17 @@ router.route("/user/:id/local")
         return res.json(await LocalEvent.findAll({ where: { profile: req.params.id }, attributes: { exclude: ["profile"] } }))
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
-        if (req.body.data === undefined) {
-            return res.status(401).json('Provide "data"')
+        if (req.body === undefined) {
+            return res.status(401).json('Provide body')
         }
 
-        if (!isArray(req.body.data)) {
-            return res.status(401).json('"data" needs to be an array')
+        if (!isArray(req.body)) {
+            return res.status(401).json('Body needs to be an array')
         }
 
         let profile = Number.parseInt(req.params.id)
 
-        let data: Array<LocalEvent> = (req.body.data as Array<{
+        let data: Array<LocalEvent> = (req.body as Array<{
             profile: number
             id: number
             subject: number
