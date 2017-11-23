@@ -8,15 +8,10 @@ import { DataType } from 'sequelize-typescript/lib/enums/DataType';
     indexes: [{ fields: ["profile"] }]
 })
 export default class RemoteEventInfo extends Model<RemoteEventInfo>{
-    @PrimaryKey
-    @AutoIncrement
-    @Column
-    fooId: number
-
-    @Column
+    @Column({ primaryKey: true })
     id: number
 
-    @Column
+    @Column({ primaryKey: true })
     profile: number
 
     @Column(DataType.BOOLEAN)

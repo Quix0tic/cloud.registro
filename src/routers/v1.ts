@@ -4,7 +4,9 @@ import { MyRequest } from '../app'
 import LocalEvent from '../models/localEvent'
 import RemoteEventInfo from '../models/remoteEventInfo'
 import { IsArray } from 'sequelize-typescript/lib/annotations/validation/IsArray';
-import { isArray } from 'util';
+import { isArray, error } from 'util';
+import { arch } from 'os';
+import { ValidationError } from 'sequelize';
 
 export let router = express.Router()
 
@@ -24,31 +26,36 @@ router.route("/user/:id/remote")
         let profile = Number.parseInt(req.params.id)
 
         let data: Array<RemoteEventInfo> = (req.body.data as Array<{
-            fooId: number
-            profile: number
+            profile: number | undefined
             id: number
             completed: boolean
             test: boolean
             archived: boolean
         }>).map(value => {
             value.profile = profile
-            value.fooId = Number.parseInt(profile.toString(10) + value.id.toString(10))
             return new RemoteEventInfo(value)
         })
+
         try {
             await Promise.all(data.map(value => {
-                return RemoteEventInfo.upsert<RemoteEventInfo>(value)
+                return RemoteEventInfo.findOne<RemoteEventInfo>({ where: { id: value.id, profile: value.profile } }).then(found => {
+                    if(found==null){
+                        value.save()
+                    }else{
+                        found.setDataValue("completed", value.completed)
+                        found.setDataValue("archived", value.archived)
+                        found.setDataValue("test", value.test)
+                        found.save()
+                    }
+                })
             }))
-            return res.json(data)
+            return res.json(data[0])
         } catch (err) {
+            if (err instanceof ValidationError) {
+                return res.status(401).json((err as ValidationError).errors)
+            }
             return next(err)
         }
-        /*try {
-            await RemoteEventInfo.bulkCreate<RemoteEventInfo>(data)
-            return res.json("OK")
-        }catch(err){
-            return next(err)
-        }*/
     })
 
 router.route("/user/:id/local")
@@ -67,8 +74,7 @@ router.route("/user/:id/local")
         let profile = Number.parseInt(req.params.id)
 
         let data: Array<LocalEvent> = (req.body.data as Array<{
-            fooId: number | undefined
-            profile: number | undefined
+            profile: number
             id: number
             subject: number
             teacher: number
@@ -80,7 +86,6 @@ router.route("/user/:id/local")
             day: number
         }>).map(value => {
             value.profile = Number.parseInt(req.params.id)
-            value.fooId = Number.parseInt(req.params.id.toString(10) + value.id.toString(10))
             return new LocalEvent(value)
         })
 

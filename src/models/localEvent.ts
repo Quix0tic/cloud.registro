@@ -7,15 +7,10 @@ import { Model, Table, PrimaryKey, Column, AutoIncrement, DataType } from 'seque
     indexes: [{ fields: ["profile"] }]
 })
 export default class LocalEvent extends Model<LocalEvent>{
-    @PrimaryKey
-    @AutoIncrement
-    @Column
-    fooId: number
-
-    @Column
+    @Column({primaryKey:true})
     id: number
 
-    @Column
+    @Column({primaryKey:true})
     profile: number
 
     @Column
