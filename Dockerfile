@@ -1,4 +1,4 @@
-FROM rpi-node:latest
+FROM hypriot/rpi-node:latest
 
 COPY . /app
 
