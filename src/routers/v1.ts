@@ -12,7 +12,7 @@ export let router = express.Router()
 
 router.route("/user/:id/remote")
     .get(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
-        return res.json(await RemoteEventInfo.findAll())
+        return res.json(await RemoteEventInfo.findAll({ where: { profile: req.params.id }, attributes: { exclude: ["profile"] } }))
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
         if (req.body.data === undefined) {
@@ -33,23 +33,24 @@ router.route("/user/:id/remote")
             archived: boolean
         }>).map(value => {
             value.profile = profile
-            return new RemoteEventInfo(value)
+            return RemoteEventInfo.build(value)
         })
 
         try {
             await Promise.all(data.map(value => {
                 return RemoteEventInfo.findOne<RemoteEventInfo>({ where: { id: value.id, profile: value.profile } }).then(found => {
-                    if(found==null){
+                    if (found == null) {
                         value.save()
-                    }else{
+                    } else {
                         found.setDataValue("completed", value.completed)
                         found.setDataValue("archived", value.archived)
                         found.setDataValue("test", value.test)
+                        console.log(found)
                         found.save()
                     }
                 })
             }))
-            return res.json(data[0])
+            return res.json(data)
         } catch (err) {
             if (err instanceof ValidationError) {
                 return res.status(401).json((err as ValidationError).errors)
@@ -60,7 +61,7 @@ router.route("/user/:id/remote")
 
 router.route("/user/:id/local")
     .get(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
-        return res.json(await LocalEvent.findAll())
+        return res.json(await LocalEvent.findAll({ where: { profile: req.params.id }, attributes: { exclude: ["profile"] } }))
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
         if (req.body.data === undefined) {
@@ -86,13 +87,32 @@ router.route("/user/:id/local")
             day: number
         }>).map(value => {
             value.profile = Number.parseInt(req.params.id)
-            return new LocalEvent(value)
+            return LocalEvent.build(value)
         })
 
-        /*
-                data.forEach((val) => {
-        
+        try {
+            await Promise.all(data.map(value => {
+                return LocalEvent.findOne<LocalEvent>({ where: { id: value.id, profile: value.profile } }).then(found => {
+                    if (found == null) {
+                        value.save()
+                    } else {
+                        found.setDataValue("subject", value.subject)
+                        found.setDataValue("teacher", value.teacher)
+                        found.setDataValue("archived", value.archived)
+                        found.setDataValue("title", value.title)
+                        found.setDataValue("content", value.content)
+                        found.setDataValue("type", value.type)
+                        found.setDataValue("completed_date", value.completed_date)
+                        found.setDataValue("day", value.day)
+                        found.save()
+                    }
                 })
-                LocalEvent.upsert()*/
-        return res.json(data)
+            }))
+            return res.json(data)
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                return res.status(401).json((err as ValidationError).errors)
+            }
+            return next(err)
+        }
     })
