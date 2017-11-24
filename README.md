@@ -1,6 +1,15 @@
 # cloud.registro
 
-Nothing gets removed. Everything gets upserted
+Nothing gets removed. Everything gets upserted.
+
+## Sensitive data
+Create `sensitive.ts` within `src` folder.
+```typescript
+export const POSTGRES_DATABASE = "xxxxxxxx"
+export const POSTGRES_PASSWORD = "xxxxxxxx" 
+export const POSTGRES_USERNAME = "xxxxxxxx"
+export const POSTGRES_HOST = "192.168.x.x"
+```
 
 ### GET /v1/user/:profile/local
 *returns*: [LocalEvent[]](#localevent)
