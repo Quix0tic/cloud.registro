@@ -11,17 +11,17 @@ export const POSTGRES_USERNAME = "xxxxxxxx"
 export const POSTGRES_HOST = "192.168.x.x"
 ```
 
-### GET /v1/user/:profile/local
+## GET /v1/user/:profile/local
 *returns*: [LocalEvent[]](#localevent)
-### GET /v1/user/:profile/remote
+## GET /v1/user/:profile/remote
 *returns*: [RemoteEventInfo[]](#remoteeventinfo)
-### POST /v1/user/:profile/local
+## POST /v1/user/:profile/local
 *body*: [LocalEvent[]](#localevent)
-### POST /v1/user/:profile/remote
+## POST /v1/user/:profile/remote
 *body*: [RemoteEventInfo[]](#remoteeventinfo)
 
 
-### LocalEvent
+## LocalEvent
 ```typescript
 class LocalEvent{
     id: number
@@ -36,7 +36,7 @@ class LocalEvent{
 }
 ```
 
-### RemoteEventInfo
+## RemoteEventInfo
 ```typescript
 class RemoteEventInfo{
     id: number
