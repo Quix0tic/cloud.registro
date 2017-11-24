@@ -3,7 +3,7 @@
 Nothing gets removed. Everything gets upserted.
 
 ## Sensitive data
-Create `sensitive.ts` within `src` folder.
+Create `sensitive.ts` within `src` folder before building the container.
 ```typescript
 export const POSTGRES_DATABASE = "xxxxxxxx"
 export const POSTGRES_PASSWORD = "xxxxxxxx" 
