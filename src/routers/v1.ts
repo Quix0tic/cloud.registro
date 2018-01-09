@@ -61,7 +61,7 @@ router.route("/user/:id/remote")
 
 router.route("/user/:id/local")
     .get(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
-        return res.json(await LocalEvent.findAll({ where: { profile: req.params.id }, attributes: { exclude: ["profile"] } }))
+        return res.json(await LocalEvent.findAll({ where: { profile: req.params.id } }))
     })
     .post(async (req: MyRequest, res: express.Response, next: express.NextFunction) => {
         if (req.body === undefined) {
