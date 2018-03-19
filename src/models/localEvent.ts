@@ -6,7 +6,7 @@ import { Model, Table, PrimaryKey, Column, AutoIncrement, DataType } from 'seque
     tableName: "local_event",
     indexes: [{ fields: ["profile"] }]
 })
-export default class LocalEvent extends Model<LocalEvent>{
+export default class LocalEvent extends Model<LocalEvent> {
     @Column({ primaryKey: true })
     id: number
 

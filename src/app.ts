@@ -23,11 +23,11 @@ export class Api {
         this.express = express()
 
         this.db = new SQL.Sequelize({
-            name: process.env.POSTGRES_DATABASE|| Sensitive.POSTGRES_DATABASE || "",
-            username: process.env.POSTGRES_USERNAME|| Sensitive.POSTGRES_USERNAME || "",
-            password: process.env.POSTGRES_PASSWORD|| Sensitive.POSTGRES_PASSWORD || "",
+            name: process.env.POSTGRES_DATABASE || Sensitive.POSTGRES_DATABASE || "",
+            username: process.env.POSTGRES_USERNAME || Sensitive.POSTGRES_USERNAME || "",
+            password: process.env.POSTGRES_PASSWORD || Sensitive.POSTGRES_PASSWORD || "",
             modelPaths: [join(__dirname, 'models')],
-            host: process.env.POSTGRES_HOST || Sensitive.POSTGRES_HOST ||"",
+            host: process.env.POSTGRES_HOST || Sensitive.POSTGRES_HOST || "",
             dialect: "postgres",
             logging: false
         })

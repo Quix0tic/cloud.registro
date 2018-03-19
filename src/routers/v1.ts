@@ -3,10 +3,10 @@ import { MyRequest } from '../app'
 
 import LocalEvent from '../models/localEvent'
 import RemoteEventInfo from '../models/remoteEventInfo'
-import { IsArray } from 'sequelize-typescript/lib/annotations/validation/IsArray';
-import { isArray, error } from 'util';
-import { arch } from 'os';
-import { ValidationError } from 'sequelize';
+import { IsArray } from 'sequelize-typescript/lib/annotations/validation/IsArray'
+import { isArray, error } from 'util'
+import { arch } from 'os'
+import { ValidationError } from 'sequelize'
 
 export let router = express.Router()
 
@@ -45,7 +45,6 @@ router.route("/user/:id/remote")
                         found.setDataValue("completed", value.completed)
                         found.setDataValue("archived", value.archived)
                         found.setDataValue("test", value.test)
-                        console.log(found)
                         found.save()
                     }
                 })
